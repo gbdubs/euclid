@@ -14,6 +14,8 @@ import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.Document;
 
+import com.gradybward.euclid.elements.Element;
+
 public class SVGPrinter {
 
   private Color color;

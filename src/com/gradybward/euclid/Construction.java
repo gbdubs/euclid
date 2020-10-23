@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gradybward.euclid.elements.Element;
+
 /** A record of a proof as it unfolds. Used for debug and display. */
 public class Construction {
   private List<Element> suppositions;

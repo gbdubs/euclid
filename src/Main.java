@@ -16,6 +16,6 @@ public class Main {
             new PointListGenerator(new Point2D.Double(), new RandomRadiusPointGenerator(4, 2),
                 Constraints.noNonAdjacentPointsAreCloserThan(4), Constraints.aRangeIsAtLeast(1))
                     .generate(10))).addToConstruction(c);
-    c.doneDebug("output12.svg");
+    c.doneDebug("output14.svg");
   }
 }
