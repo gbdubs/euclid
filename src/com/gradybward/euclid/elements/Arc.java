@@ -59,24 +59,22 @@ final class Arc implements PathElement {
   }
 
   private Arc2D.Double getArc() {
-    if (clockwise) {
-      return arcFromAroundToCClockwise(to, around, from);
-    } else {
-      return arcFromAroundToCClockwise(from, around, to);
-    }
-  }
-
-  private static Arc2D.Double arcFromAroundToCClockwise(Point2D.Double from, Point2D.Double around,
-      Point2D.Double to) {
     double d = from.distance(around);
     // THIS SHOULD NOT WORK... but it actually does generate the arc that connects these two
     // points...
     double start = Math.atan2(around.y - from.y, from.x - around.x) * 180 / Math.PI;
     double end = Math.atan2(around.y - to.y, to.x - around.x) * 180 / Math.PI;
-    if (end < start) {
-      end += 360;
+    double extent = end - start;
+    if (clockwise) {
+      if (extent > 0) {
+        extent -= 360;
+      }
+    } else {
+      if (extent < 0) {
+        extent += 360;
+      }
     }
-    return new Arc2D.Double(around.x - d, around.y - d, 2 * d, 2 * d, start, end - start,
+    return new Arc2D.Double(around.x - d, around.y - d, 2 * d, 2 * d, start, extent,
         Arc2D.OPEN);
   }
 }

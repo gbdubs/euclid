@@ -32,13 +32,9 @@ final class Path implements Element {
     Point2D.Double last = getFirstPoint(elements.get(0), elements.get(1));
     for (PathElement element : elements) {
       if (!equals(last, element.getStart())) {
-        System.out.println("REVERSE!");
-        element = element.reverse();
-      }
-      if (!equals(last, element.getStart())) {
         throw new RuntimeException("Unexpected - not a connected path.");
       }
-      path.append(element.getPathIterator(), false); // TODO SET TO TRUE!
+      path.append(element.getPathIterator(), true);
       last = element.getEnd();
     }
     return path;
