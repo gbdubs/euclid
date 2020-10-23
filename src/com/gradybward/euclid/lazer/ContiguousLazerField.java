@@ -3,12 +3,12 @@ package com.gradybward.euclid.lazer;
 import static com.gradybward.euclid.PointUtils.pointFromLinePlusDistance;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gradybward.euclid.Construction;
 import com.gradybward.euclid.elements.Element;
+import com.gradybward.euclid.elements.Path;
 import com.gradybward.euclid.elements.PathElement;
 
 public class ContiguousLazerField implements LazerField {
@@ -17,10 +17,9 @@ public class ContiguousLazerField implements LazerField {
   public ContiguousLazerField(List<Point2D.Double> points) {
     this.points = new ArrayList<>(points);
   }
-
+ 
   @Override
-  public void addToConstructionPathStartingFromPoint(Construction c, Point2D.Double lastArcPoint) {
-    c.suppose(points.toArray(new Point2D.Double[0]));
+  public Path getPathThroughField(Point2D.Double lastArcPoint) {
     List<PathElement> path = new ArrayList<>();
     Point2D.Double lastCenter = points.get(0);
     boolean directionCW = true;
@@ -29,8 +28,6 @@ public class ContiguousLazerField implements LazerField {
       Point2D.Double nextCenter = points.get(i + 1);
       Point2D.Double arcPoint = pointFromLinePlusDistance(center, nextCenter,
           center.distance(lastArcPoint));
-      c.thenConstruct(Element.segment(center, nextCenter));
-      c.thenConstruct(Element.circle(center, arcPoint));
       if (resultShouldToggleDirectionFromLast(arcPoint, lastArcPoint, lastCenter, center)) {
         directionCW = !directionCW;
       }
@@ -42,7 +39,21 @@ public class ContiguousLazerField implements LazerField {
       lastArcPoint = arcPoint;
       lastCenter = center;
     }
-    c.resultingIn(Element.path(path));
+    return Element.path(path);
+  }
+  
+  @Override
+  public void addDebuggingConstructionHintsForPathThroughField(Construction c, Point2D.Double lastArcPoint) {
+    c.suppose(points.toArray(new Point2D.Double[0]));
+    for (int i = 1; i < points.size() - 1; i++) {
+      Point2D.Double center = points.get(i);
+      Point2D.Double nextCenter = points.get(i + 1);
+      Point2D.Double arcPoint = pointFromLinePlusDistance(center, nextCenter,
+          center.distance(lastArcPoint));
+      c.thenConstruct(Element.segment(center, nextCenter));
+      c.thenConstruct(Element.circle(center, arcPoint));
+      lastArcPoint = arcPoint;
+    }
   }
 
   @Override

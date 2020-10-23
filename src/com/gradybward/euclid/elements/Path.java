@@ -4,13 +4,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 
-final class Path implements Element {
+public final class Path implements Element {
   private final List<PathElement> elements;
 
   Path(List<PathElement> elements) {
@@ -18,8 +18,8 @@ final class Path implements Element {
   }
 
   @Override
-  public Collection<Double> getBounds() {
-    return this.elements.stream().flatMap(e -> e.getBounds().stream()).collect(Collectors.toList());
+  public Stream<Double> getBounds() {
+    return this.elements.stream().flatMap(Element::getBounds);
   }
 
   @Override
@@ -27,9 +27,9 @@ final class Path implements Element {
     graphics.draw(transform.createTransformedShape(toPath2D()));
   }
 
-  private Path2D.Double toPath2D() {
+  public Path2D.Double toPath2D() {
     Path2D.Double path = new Path2D.Double();
-    Point2D.Double last = getFirstPoint(elements.get(0), elements.get(1));
+    Point2D.Double last = getStart();
     for (PathElement element : elements) {
       if (!equals(last, element.getStart())) {
         throw new RuntimeException("Unexpected - not a connected path.");
@@ -39,8 +39,24 @@ final class Path implements Element {
     }
     return path;
   }
+  
+  public Point2D.Double getStart() {
+    return getEndPoint(elements.get(0), elements.get(1));
+  }
+  
+  public Point2D.Double getEnd() {
+    return getEndPoint(elements.get(elements.size() - 1), elements.get(elements.size() - 2));
+  }
+  
+  public Path reverse() {
+    List<PathElement> reversed = new ArrayList<>();
+    for (int i = elements.size() - 1; i >= 0; i--) {
+      reversed.add(elements.get(i).reverse());
+    }
+    return new Path(reversed);
+  }
 
-  private static Point2D.Double getFirstPoint(PathElement a, PathElement b) {
+  private static Point2D.Double getEndPoint(PathElement a, PathElement b) {
     if (equals(a.getStart(), b.getStart()) || equals(a.getStart(), b.getEnd())) {
       return a.getEnd();
     } else if (equals(a.getEnd(), b.getStart()) || equals(a.getEnd(), b.getEnd())) {

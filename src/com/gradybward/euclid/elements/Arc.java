@@ -4,12 +4,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
 import org.apache.batik.svggen.SVGGraphics2D;
+
+import com.gradybward.euclid.PointUtils;
 
 final class Arc implements PathElement {
   private final Point2D.Double from;
@@ -25,12 +25,8 @@ final class Arc implements PathElement {
   }
 
   @Override
-  public Collection<Double> getBounds() {
-    Rectangle2D.Double r = (Rectangle2D.Double) getArc().getBounds2D();
-    return Arrays.asList(new Point2D.Double(r.getX(), r.getY()),
-        new Point2D.Double(r.getX() + r.getWidth(), r.getY()),
-        new Point2D.Double(r.getX() + r.getWidth(), r.getY() + r.getHeight()),
-        new Point2D.Double(r.getX(), r.getY() + r.getHeight()));
+  public Stream<Point2D.Double> getBounds() {
+    return PointUtils.getBoundsFromRectangle((Rectangle2D.Double) getArc().getBounds2D());
   }
 
   @Override

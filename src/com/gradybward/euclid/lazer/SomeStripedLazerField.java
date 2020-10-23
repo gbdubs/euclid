@@ -28,8 +28,9 @@ public final class SomeStripedLazerField {
         continue;
       }
       double nd = d * (i + 1) / (renderStripes.length + 1);
-      lazerField.addToConstructionPathStartingFromPoint(c,
-          pointFromLinePlusDistance(aMin, aMax, nd));
+      Point2D.Double a = pointFromLinePlusDistance(aMin, aMax, nd);
+      lazerField.addDebuggingConstructionHintsForPathThroughField(c, a);
+      c.resultingIn(lazerField.getPathThroughField(a));
     }
   }
 }

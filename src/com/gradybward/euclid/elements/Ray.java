@@ -5,8 +5,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 
@@ -21,8 +20,8 @@ final class Ray implements Element {
   }
 
   @Override
-  public Collection<Double> getBounds() {
-    return Arrays.asList(origin, destination);
+  public Stream<Double> getBounds() {
+    return Stream.of(origin, destination);
   }
 
   @Override

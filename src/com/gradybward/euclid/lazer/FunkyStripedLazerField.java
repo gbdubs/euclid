@@ -25,8 +25,9 @@ public final class FunkyStripedLazerField {
     double d = aMin.distance(aMax);
     for (int i = 0; i < nStripes; i++) {
       double nd = d * i / (nStripes - 1);
-      lazerField.addToConstructionPathStartingFromPoint(c,
-          pointFromLinePlusDistance(aMin, aMax, nd));
+      Point2D.Double a = pointFromLinePlusDistance(aMin, aMax, nd);
+      lazerField.addDebuggingConstructionHintsForPathThroughField(c, a);
+      c.resultingIn(lazerField.getPathThroughField(a));
     }
   }
 }

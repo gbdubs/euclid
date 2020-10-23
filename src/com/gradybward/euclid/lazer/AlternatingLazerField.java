@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.gradybward.euclid.Construction;
 import com.gradybward.euclid.elements.Element;
+import com.gradybward.euclid.elements.Path;
 import com.gradybward.euclid.elements.PathElement;
 
 public final class AlternatingLazerField implements LazerField {
@@ -19,14 +20,11 @@ public final class AlternatingLazerField implements LazerField {
   }
 
   @Override
-  public void addToConstructionPathStartingFromPoint(Construction c, Point2D.Double a) {
-    c.suppose(points.toArray(new Point2D.Double[0]));
+  public Path getPathThroughField(Point2D.Double a) {
     List<PathElement> path = new ArrayList<>();
     for (int i = 0; i < points.size() - 1; i++) {
       Point2D.Double p = points.get(i);
       Point2D.Double an = pointFromLinePlusDistance(p, points.get(i + 1), p.distance(a));
-      c.thenConstruct(Element.circle(p, an));
-      c.thenConstruct(Element.point(an));
       if (i % 2 == 0) {
         path.add(Element.arcFromAroundToCW(a, p, an));
       } else {
@@ -34,7 +32,19 @@ public final class AlternatingLazerField implements LazerField {
       }
       a = an;
     }
-    c.resultingIn(Element.path(path));
+    return Element.path(path);
+  }
+
+  @Override
+  public void addDebuggingConstructionHintsForPathThroughField(Construction c, Point2D.Double a) {
+    c.suppose(points.toArray(new Point2D.Double[0]));
+    for (int i = 0; i < points.size() - 1; i++) {
+      Point2D.Double p = points.get(i);
+      Point2D.Double an = pointFromLinePlusDistance(p, points.get(i + 1), p.distance(a));
+      c.thenConstruct(Element.circle(p, an));
+      c.thenConstruct(Element.point(an));
+      a = an;
+    }
   }
 
   @Override

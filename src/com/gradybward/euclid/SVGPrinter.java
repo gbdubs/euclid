@@ -3,7 +3,9 @@ package com.gradybward.euclid;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -30,13 +32,23 @@ public class SVGPrinter {
     this.color = color;
   }
 
-  public void write(Element element) {
+  public void draw(Element element) {
     toWrite.add(new SVGPrinterElement(color, element));
   }
 
-  public void writeAll(List<Element> es) {
+  public void drawAll(List<Element> es) {
     for (Element e : es) {
-      write(e);
+      draw(e);
+    }
+  }
+  
+  public void fill(Area area) {
+    toWrite.add(new SVGPrinterElement(color, area));
+  }
+
+  public void fill(List<Area> as) {
+    for (Area a : as) {
+      fill(a);
     }
   }
 
@@ -87,21 +99,41 @@ public class SVGPrinter {
   }
 
   private Stream<Point2D.Double> getAllBounds() {
-    return toWrite.stream().flatMap(e -> e.element.getBounds().stream());
+    return toWrite.stream().flatMap(SVGPrinterElement::getBounds);
   }
 
   private static class SVGPrinterElement {
     private final Color color;
     private final Element element;
+    private final Area area;
 
     public SVGPrinterElement(Color color, Element element) {
       this.color = color;
       this.element = element;
+      this.area = null;
+    }
+
+    public SVGPrinterElement(Color color, Area area) {
+      this.color = color;
+      this.element = null;
+      this.area = area;
     }
 
     public void print(AffineTransform transform, SVGGraphics2D svgGraphic) {
       svgGraphic.setColor(color);
-      element.render(transform, svgGraphic);
+      if (element != null) {
+        element.render(transform, svgGraphic);
+      }
+      if (area != null) {
+        svgGraphic.fill(transform.createTransformedShape(area));
+      }
+    }
+    
+    public Stream<Point2D.Double> getBounds() {
+      if (element != null) {
+        return element.getBounds();
+      }
+      return PointUtils.getBoundsFromRectangle((Rectangle2D.Double) area.getBounds2D());
     }
   }
 }

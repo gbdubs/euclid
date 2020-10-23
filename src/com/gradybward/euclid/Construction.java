@@ -45,18 +45,18 @@ public class Construction {
   public void done(String filename) {
     SVGPrinter result = new SVGPrinter();
     result.setColor(Color.BLACK);
-    result.writeAll(theorems);
+    result.drawAll(theorems);
     result.print(filename);
   }
 
   public void doneDebug(String filename) {
     SVGPrinter result = new SVGPrinter();
     result.setColor(new Color(225, 225, 225));
-    result.writeAll(constructions);
+    result.drawAll(constructions);
     result.setColor(Color.RED);
-    result.writeAll(suppositions);
+    result.drawAll(suppositions);
     result.setColor(Color.BLACK);
-    result.writeAll(theorems);
+    result.drawAll(theorems);
     result.print(filename);
   }
 }

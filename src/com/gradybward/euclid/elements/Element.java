@@ -3,14 +3,14 @@ package com.gradybward.euclid.elements;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 
 public interface Element {
 
-  public Collection<Point2D.Double> getBounds();
+  public Stream<Point2D.Double> getBounds();
 
   public void render(AffineTransform transform, SVGGraphics2D graphics);
 
@@ -46,7 +46,7 @@ public interface Element {
     return new Arc(from, around, to, true);
   }
 
-  public static Element path(List<PathElement> pathElements) {
+  public static Path path(List<PathElement> pathElements) {
     return new Path(pathElements);
   }
 }
