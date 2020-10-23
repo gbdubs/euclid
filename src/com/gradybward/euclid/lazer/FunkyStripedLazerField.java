@@ -6,14 +6,14 @@ import java.awt.geom.Point2D;
 
 import com.gradybward.euclid.Construction;
 
-public final class SomeStripedLazerField {
+public final class FunkyStripedLazerField {
 
   private final LazerField lazerField;
-  private final boolean[] renderStripes;
+  private final int nStripes;
 
-  public SomeStripedLazerField(LazerField lazerField, boolean... stripes) {
+  public FunkyStripedLazerField(int nStripes, LazerField lazerField) {
+    this.nStripes = nStripes;
     this.lazerField = lazerField;
-    this.renderStripes = stripes;
   }
 
   public void addToConstruction(Construction c) {
@@ -23,11 +23,8 @@ public final class SomeStripedLazerField {
     Point2D.Double aMin = pointFromLinePlusDistance(p1, p2, acceptableARange[0]);
     Point2D.Double aMax = pointFromLinePlusDistance(p1, p2, acceptableARange[1]);
     double d = aMin.distance(aMax);
-    for (int i = 0; i < renderStripes.length; i++) {
-      if (!renderStripes[i]) {
-        continue;
-      }
-      double nd = d * (i + 1) / (renderStripes.length + 1);
+    for (int i = 0; i < nStripes; i++) {
+      double nd = d * i / (nStripes - 1);
       lazerField.addToConstructionPathStartingFromPoint(c,
           pointFromLinePlusDistance(aMin, aMax, nd));
     }

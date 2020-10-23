@@ -17,12 +17,16 @@ public final class StripedLazerField {
   }
 
   public void addToConstruction(Construction c) {
+    double[] acceptableARange = Utils.getARange(this.lazerField.getPoints());
     Point2D.Double p1 = lazerField.getPoints().get(0);
     Point2D.Double p2 = lazerField.getPoints().get(1);
-    double d = p1.distance(p2);
+    Point2D.Double aMin = pointFromLinePlusDistance(p1, p2, acceptableARange[0]);
+    Point2D.Double aMax = pointFromLinePlusDistance(p1, p2, acceptableARange[1]);
+    double d = aMin.distance(aMax);
     for (int i = 0; i < nStripes; i++) {
       double nd = d * (i + 1) / (nStripes + 1);
-      lazerField.addToConstructionPathStartingFromPoint(c, pointFromLinePlusDistance(p1, p2, nd));
+      lazerField.addToConstructionPathStartingFromPoint(c,
+          pointFromLinePlusDistance(aMin, aMax, nd));
     }
   }
 }
