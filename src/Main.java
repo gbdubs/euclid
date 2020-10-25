@@ -1,55 +1,42 @@
-import java.awt.Color;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.gradybward.colors.coolors.CoolorsColorPalletes;
-import com.gradybward.euclid.Construction;
 import com.gradybward.euclid.PointUtils;
 import com.gradybward.euclid.SVGPrinter;
 import com.gradybward.euclid.elements.Path;
 import com.gradybward.euclid.filling.SimpleFilling;
 import com.gradybward.euclid.lazer.ContiguousLazerField;
-import com.gradybward.euclid.lazer.FunkyStripedLazerField;
 import com.gradybward.euclid.lazer.LazerField;
 import com.gradybward.euclid.lazer.Utils;
-import com.gradybward.pointlist.Constraints;
-import com.gradybward.pointlist.PointListGenerator;
-import com.gradybward.pointlist.RandomRadiusPointGenerator;
-import com.gradybward.pointlist.RectangularGridRandomPointGenerator;
-import com.gradybward.pointlist.RectangularGridSnakePointGenerator;
-import com.gradybward.pointlist.TriangularGridRandomPointGenerator;
+import com.gradybward.pointlist.HardcodedRectangularGrids;
 
 public class Main {
 
   public static void main(String[] args) {
-    overshooting();
+    colorScheme();
   }
   
-  private static void overshooting(){
+  private static void colorScheme(){
     SVGPrinter printer = new SVGPrinter();
     com.gradybward.colors.Color[] colors = CoolorsColorPalletes.getRandomPallete().get();
-    List<Point2D.Double> points = new PointListGenerator(
-        new Point2D.Double(), 
-        new TriangularGridRandomPointGenerator(1),
-        Constraints.preferNonDuplicates(),
-        Constraints.aRangeIsAtLeast(.5)).generate(20);
+    List<Point2D.Double> points = HardcodedRectangularGrids.bottomLeftCorner(10);
+    System.out.println(points);
     LazerField lf = new ContiguousLazerField(points);
     double[] aRange = Utils.getARange(points);
-    double aRangeStartProp = .5;
-    double aRangeEndProp = .75;
-
-    Path p1 = lf.getPathThroughField(PointUtils.pointFromLinePlusDistance(points.get(0), points.get(1), ((aRange[1] - aRange[0]) * aRangeStartProp) + aRange[0]));
-    Path p2 = lf.getPathThroughField(PointUtils.pointFromLinePlusDistance(points.get(0), points.get(1), ((aRange[1] - aRange[0]) * aRangeEndProp) + aRange[0]));
-    Area a = new SimpleFilling().enclosedByPaths(p1, p2);
-    printer.setColor(colors[0].get());
-    printer.fill(a);
-    
-    printer.print("output/Overshooting");
+    for (int i = 0; i < colors.length; i++) {
+      double aRangeStartProp = 1.0 * i / colors.length;
+      double aRangeEndProp = aRangeStartProp + 1.0 / colors.length;
+      Path p1 = lf.getPathThroughField(PointUtils.pointFromLinePlusDistance(points.get(0), points.get(1), ((aRange[1] - aRange[0]) * aRangeStartProp) + aRange[0]));
+      Path p2 = lf.getPathThroughField(PointUtils.pointFromLinePlusDistance(points.get(0), points.get(1), ((aRange[1] - aRange[0]) * aRangeEndProp) + aRange[0]));
+      Area a = new SimpleFilling().enclosedByPaths(p1, p2);
+      printer.setColor(colors[i].get());
+      printer.fill(a);
+    }
+    printer.print("output/Combo");
   }
-  
+  /*
   private static void consensus2(){
     SVGPrinter printer = new SVGPrinter();
     int numSnakes = 80;
@@ -353,4 +340,5 @@ public class Main {
                     .generate(10))).addToConstruction(c);
     c.doneDebug("output15.svg");
   }
+  */
 }

@@ -10,11 +10,12 @@ public class Utils {
     double maxAllowed = Double.MAX_VALUE;
     double runningDelta = 0;
     for (int i = 0; i < points.size() - 1; i++) {
+      double dist = points.get(i).distance(points.get(i + 1));
       if (i % 2 == 0) {
-        runningDelta += points.get(i).distance(points.get(i + 1));
+        runningDelta += dist;
         maxAllowed = Math.min(maxAllowed, runningDelta);
       } else {
-        runningDelta -= points.get(i).distance(points.get(i + 1));
+        runningDelta -= dist;
         minAllowed = Math.max(minAllowed, runningDelta);
       }
     }
