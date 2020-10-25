@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.apache.batik.svggen.SVGGraphics2D;
 
 import com.gradybward.euclid.PointUtils;
+import com.gradybward.pointlist.Constraints;
 
 final class Arc implements PathElement {
   private final Point2D.Double from;

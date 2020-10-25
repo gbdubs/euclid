@@ -30,4 +30,24 @@ public class Constraints {
       return allowableAs[1] - allowableAs[0] > threshold;
     };
   }
+
+  public static Constraint noDuplicates() {
+    return noPointsAreCloserThan(.01);
+  }
+  
+  public static Constraint allFinite() {
+    return (point, others) -> {
+      return isFinite(point.x) && isFinite(point.y);
+    };
+  }
+  
+  private static boolean isFinite(Double d) {
+    return Double.isFinite(d) && d < Double.MAX_VALUE && d > Double.MIN_VALUE;
+  }
+
+  public static Constraint preferNonDuplicates() {
+    return (point, others) -> {
+      return Math.random() < .1 || noPointsAreCloserThan(.01).isAcceptableNextPoint(point, others);
+    };
+  }
 }

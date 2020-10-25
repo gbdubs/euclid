@@ -10,6 +10,7 @@ import com.gradybward.euclid.Construction;
 import com.gradybward.euclid.elements.Element;
 import com.gradybward.euclid.elements.Path;
 import com.gradybward.euclid.elements.PathElement;
+import com.gradybward.pointlist.Constraints;
 
 public class ContiguousLazerField implements LazerField {
   private final List<Point2D.Double> points;
@@ -63,7 +64,7 @@ public class ContiguousLazerField implements LazerField {
 
   private static boolean resultShouldToggleDirectionFromLast(Point2D.Double arcPoint,
       Point2D.Double lastArcPoint, Point2D.Double lastCenter, Point2D.Double nextCenter) {
-    return arcPoint.equals(lastArcPoint)
+    return arcPoint.distance(lastArcPoint) < .001
         || lastCenter.distance(lastArcPoint) < lastCenter.distance(nextCenter);
   }
 }

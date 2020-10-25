@@ -62,7 +62,8 @@ public final class Path implements Element {
     } else if (equals(a.getEnd(), b.getStart()) || equals(a.getEnd(), b.getEnd())) {
       return a.getStart();
     }
-    throw new RuntimeException("Unexpected - not a connected path.");
+    throw new RuntimeException(String.format(
+        "Unexpected - not a connected path.\nPathElementA = %s = [%s, %s]\nPathElementB = %s = [%s, %s]\n", a, a.getStart(), a.getEnd(), b, b.getStart(), b.getEnd()));
   }
 
   private static boolean equals(Double a, Double b) {
