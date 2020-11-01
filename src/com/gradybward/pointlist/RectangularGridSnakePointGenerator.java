@@ -7,13 +7,13 @@ public class RectangularGridSnakePointGenerator implements PointGenerator {
   private final int maxX;
   private final int maxY;
   private final boolean horizontal;
-  
+
   public RectangularGridSnakePointGenerator(int maxX, int maxY, boolean horizontal) {
     this.maxX = maxX;
     this.maxY = maxY;
     this.horizontal = horizontal;
   }
-  
+
   @Override
   public Point2D.Double generate(Point2D.Double last) {
     if (last.x > maxX || last.y > maxY || (last.x == maxX && last.y == maxY)) {

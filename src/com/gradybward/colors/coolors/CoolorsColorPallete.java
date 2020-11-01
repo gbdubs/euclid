@@ -8,6 +8,7 @@ import com.gradybward.colors.ColorPallete;
 public class CoolorsColorPallete implements ColorPallete {
   final int numberOfSaves;
   private final List<Color> colors;
+
   public CoolorsColorPallete(List<Color> colors, int numberOfSaves) {
     this.numberOfSaves = numberOfSaves;
     this.colors = colors;

@@ -18,7 +18,7 @@ public class ContiguousLazerField implements LazerField {
   public ContiguousLazerField(List<Point2D.Double> points) {
     this.points = new ArrayList<>(points);
   }
- 
+
   @Override
   public Path getPathThroughField(Point2D.Double lastArcPoint) {
     List<PathElement> path = new ArrayList<>();
@@ -42,9 +42,10 @@ public class ContiguousLazerField implements LazerField {
     }
     return Element.path(path);
   }
-  
+
   @Override
-  public void addDebuggingConstructionHintsForPathThroughField(Construction c, Point2D.Double lastArcPoint) {
+  public void addDebuggingConstructionHintsForPathThroughField(Construction c,
+      Point2D.Double lastArcPoint) {
     c.suppose(points.toArray(new Point2D.Double[0]));
     for (int i = 1; i < points.size() - 1; i++) {
       Point2D.Double center = points.get(i);

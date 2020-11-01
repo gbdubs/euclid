@@ -71,7 +71,6 @@ final class Arc implements PathElement {
         extent += 360;
       }
     }
-    return new Arc2D.Double(around.x - d, around.y - d, 2 * d, 2 * d, start, extent,
-        Arc2D.OPEN);
+    return new Arc2D.Double(around.x - d, around.y - d, 2 * d, 2 * d, start, extent, Arc2D.OPEN);
   }
 }

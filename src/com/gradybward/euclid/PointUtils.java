@@ -18,6 +18,6 @@ public final class PointUtils {
         new Point2D.Double(r.getX() + r.getWidth(), r.getY() + r.getHeight()),
         new Point2D.Double(r.getX(), r.getY() + r.getHeight()));
   }
-  
+
   private PointUtils() {}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import com.gradybward.euclid.Construction;
 import com.gradybward.euclid.elements.Path;
 
-public interface LazerField { 
+public interface LazerField {
   public List<Point2D.Double> getPoints();
 
   public Path getPathThroughField(Point2D.Double a);

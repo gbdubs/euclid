@@ -39,15 +39,15 @@ public final class Path implements Element {
     }
     return path;
   }
-  
+
   public Point2D.Double getStart() {
     return getEndPoint(elements.get(0), elements.get(1));
   }
-  
+
   public Point2D.Double getEnd() {
     return getEndPoint(elements.get(elements.size() - 1), elements.get(elements.size() - 2));
   }
-  
+
   public Path reverse() {
     List<PathElement> reversed = new ArrayList<>();
     for (int i = elements.size() - 1; i >= 0; i--) {
@@ -63,7 +63,8 @@ public final class Path implements Element {
       return a.getStart();
     }
     throw new RuntimeException(String.format(
-        "Unexpected - not a connected path.\nPathElementA = %s = [%s, %s]\nPathElementB = %s = [%s, %s]\n", a, a.getStart(), a.getEnd(), b, b.getStart(), b.getEnd()));
+        "Unexpected - not a connected path.\nPathElementA = %s = [%s, %s]\nPathElementB = %s = [%s, %s]\n",
+        a, a.getStart(), a.getEnd(), b, b.getStart(), b.getEnd()));
   }
 
   private static boolean equals(Double a, Double b) {

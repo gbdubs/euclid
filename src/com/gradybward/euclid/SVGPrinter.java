@@ -41,7 +41,7 @@ public class SVGPrinter {
       draw(e);
     }
   }
-  
+
   public void fill(Area area) {
     toWrite.add(new SVGPrinterElement(color, area));
   }
@@ -53,7 +53,7 @@ public class SVGPrinter {
   }
 
   public void print(String path) {
-    print(path, 400, 500);
+    print(path, 1000, 1000);
   }
 
   public void print(String path, int height, int width) {
@@ -128,7 +128,7 @@ public class SVGPrinter {
         svgGraphic.fill(transform.createTransformedShape(area));
       }
     }
-    
+
     public Stream<Point2D.Double> getBounds() {
       if (element != null) {
         return element.getBounds();
